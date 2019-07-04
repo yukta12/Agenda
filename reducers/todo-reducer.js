@@ -13,7 +13,7 @@ const ToDoReducer = (state = INITIAL_STATE,action) =>{
     switch(action.type){
         case CHECK_TODO_ITEM_ACTION :
             let key = action.data;
-            let updatedItems = state.pendingItems.filter((items) => key !== item.key);
+            let updatedItems = state.pendingItems.filter((item) => key !== item.key);
             return{...state,pendingItems: updatedItems};
 
         case GET_PENDING_ITEMS_ACTION :
