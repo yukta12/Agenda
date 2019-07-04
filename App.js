@@ -1,6 +1,22 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {Router,Scene} from "react-native-router-flux";
+import TodoListScreen from "./screens/todo-list";
+import NewTodoScreen from "./screens/new-todo";
+
+import RootReducer from "./reducers/root-reducer";
+import {createStore} from "redux";
+import {connect,Provider} from "react-redux";
+import {responsiveHeight} from "react-native-responsive-dimensions";
+import {PRIMARY_COLOR} from "./colors";
+
+
 import CheckBox from "./components/CheckBox";
+
+
+const RouterWithRedux = connect()(Router);
+
+const store = createStore(RootReducer);
 
 export default class App extends React.Component {
     constructor(props){
@@ -11,10 +27,17 @@ export default class App extends React.Component {
     }
     render() {
         return (
+            <Provider store={store}>
             <View style={styles.container}>
-               <CheckBox onValueChange={(status)=> this.setState({isChecked:status})}
-                          isChecked={this.state.isChecked}/>
+                <RouterWithRedux>
+                <Scene key="root" hideNavBar={true}>
+                    <Scene key="todoList" component={TodoListScreen}/>
+                    <Scene key="newTodo" component={NewTodoScreen}/>
+                </Scene>
+                </RouterWithRedux>
             </View>
+
+            </Provider>
         );
     }
 }
@@ -22,8 +45,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: PRIMARY_COLOR,
+        paddingTop:responsiveHeight(5),
+        paddingBottom:responsiveHeight(4)
     },
 });
